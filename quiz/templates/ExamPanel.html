@@ -1,0 +1,112 @@
+{% load static %} 
+<html>
+    <head>
+        <link rel="stylesheet" type = "text/css" href="{% static 'ExamPanel.css'%}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo 2&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div id="progress-bar" style="width: 50; height: 1%; border-radius: 4px; background-color: #FFF;"></div>
+            <article class="clock" id="model3">
+                <h3></h3>
+                <form action="/exitexam/" method="POST">
+                    {% csrf_token %}
+                    <input type="text" name="result" id="marks" hidden>
+                    <input value="Finish Test" style="height: 5%; background-color: white; font-family: 'Baloo 2'; border: none;" type="submit">
+                </form>
+              
+                <div class="count">
+                    <h3 class="count-timer">Exam Ends In</h3>
+                  <div id="timer"></div>
+                </div>
+              </article>
+              <br><br>
+            <div class="test-panel">
+                <h2 id="test_status"></h2>
+                <div id="test"></div>
+            </div>
+        </div>
+    </body>
+    <script>
+            document.addEventListener('contextmenu', event => event.preventDefault());
+            var pos = 0, test, test_status, question, choice, choices, chA, chB, chC, chD, correct = 0;
+            var questions = JSON.parse('{{ Question|safe }}');
+            var sec         = '{{Time}}'* 60,
+                countDiv    = document.getElementById("timer"),
+                secpass,
+                countDown   = setInterval(function () {
+                    'use strict';
+                    secpass();
+                }, 1000);
+            function secpass() {
+                'use strict';    
+                var min     = Math.floor(sec / 60),
+                    remSec  = sec % 60;        
+                if (remSec < 10) {                    
+                    remSec = '0' + remSec;
+                }
+                if (min < 10) {  
+                    min = '0' + min;               
+                }
+                countDiv.innerHTML = min + ":" + remSec;          
+                if (sec > 0) {
+                    sec = sec - 1;      
+                } else {  
+                    clearInterval(countDown);     
+                    countDiv.innerHTML = 'Exam Over';  
+                    pos = questions.length;  
+                    renderQuestion(); 
+                }
+            }
+            function _(x){
+                return document.getElementById(x);
+            }
+
+            function exitExam() {
+                window.open("/exitexam");
+            }
+
+            function renderQuestion(){ 
+                document.getElementById("progress-bar").style.width = (pos/questions.length) * 100 + "%";
+                test = _("test");
+                if(pos >= questions.length){
+                    test.innerHTML = "<h2 class='test-result'>You Scored "+correct+" Out Of "+'{{Total}}' +"</h2></br/>";
+                    test.innerHTML += "<h2 class='test-result'>Click On Finish Test To Submit</h2></br/>";
+                    _("test_status").innerHTML = "Test Completed";
+                    return false;
+                }
+                _("test_status").innerHTML = "QUESTION "+(pos+1);
+                question = questions[pos][0];
+                chA = questions[pos][1];
+                chB = questions[pos][2];
+                chC = questions[pos][3];
+                chD = questions[pos][4];
+                test.innerHTML = "<div id='ten-countdown'></div>";
+                test.innerHTML += "<h3 class='exam-question'>"+question+"</h3>";
+                test.innerHTML += "<label><input class='exam-opt'  type='radio' name='choices' value='A'/><span>" + chA + "</span></label><br/><br/>";
+                test.innerHTML += "<label><input class='exam-opt' type='radio' name='choices' value='B'/><span>" + chB + "</span></label><br/><br/>";
+                test.innerHTML += "<label><input class='exam-opt' type='radio' name='choices' value='C'/><span>" + chC + "</span></label><br/><br/>";
+                test.innerHTML += "<label><input class='exam-opt' type='radio' name='choices' value='D'/><span>" + chD + "</span></label><br/><br/>";
+                test.innerHTML += "<button class='exam-submit-btn' onclick='checkAnswer()'>Submit Answer & Next</button>";      
+            }
+            function checkAnswer(){
+                choices = document.getElementsByName("choices");
+                for(var i=0; i<choices.length; i++){
+                    if(choices[i].checked){
+                        choice = choices[i].value;
+                    }
+                }
+                if(choice == questions[pos][5]){
+                    correct = correct + questions[pos][6];
+                    document.getElementById("marks").value = correct;
+                }
+                pos++;
+                renderQuestion();
+            }
+            
+            window.addEventListener("load", renderQuestion, false);
+    </script>
+</html>

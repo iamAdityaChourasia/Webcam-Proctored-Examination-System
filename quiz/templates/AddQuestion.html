@@ -1,0 +1,52 @@
+{% load static %}
+<html>
+    <head>
+        <link rel="stylesheet" type = "text/css" href="{% static 'AddQuestion.css'%}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo 2&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="nav-bar row">
+                <div class="col-lg-6">
+                    <h2 class="nav-head">Admin Panel</h2>
+                </div>
+                <div class="col-lg-6">
+                    <div class="row">
+                        <p class="nav-info"><b>Welcome, {{user.username}}</b></p>&nbsp;&nbsp;
+                        <button class="add-student-btn" onclick="regStudent()"><b>Register Student</b></button>
+                        <button class="add-question-btn" onclick="addQuestion()"><b>Add Exam</b></button>
+                        <button class="admin-logout-btn" onclick="logoutAdmin()"><b>Logout</b></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="container">
+                <form class="question-form" action="/formsubmit/" method="POST">
+                    {% csrf_token %}
+                    <input class="exam-form-input" type="text" name="marks" placeholder="Marks"><br>
+                    <textarea class="text-area-ques" name="question" rows="4" cols="50" placeholder="Enter Question"></textarea><br>    
+                    <input class="exam-form-input" type="text" name="optA" placeholder="Option A"><br>
+                    <input class="exam-form-input" type="text" name="optB" placeholder="Option B"><br>
+                    <input class="exam-form-input" type="text" name="optC" placeholder="Option C"><br>
+                    <input class="exam-form-input" type="text" name="optD" placeholder="Option D"><br>
+                    <input class="exam-form-input" type="text" name="correct" placeholder="Answer"><br>
+                    <input class="exam-form-btn" type="submit" value="Next">
+                </form><br><br>
+        </div>
+    </body>
+    <script>
+        function logoutAdmin() {
+            window.open("/logout");
+        }
+        function regStudent() {
+            window.open("/addstudent");
+        }
+        function addQuestion() {
+            window.open("/addquestion");
+        }
+    </script>
+</html>

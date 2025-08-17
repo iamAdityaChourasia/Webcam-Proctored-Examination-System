@@ -1,0 +1,69 @@
+{%load static%}
+<html>
+    <head>
+        <title>
+            Student Panel
+        </title>
+        <link rel="stylesheet" type = "text/css" href="{% static 'StudentPanel.css'%}">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Baloo+2&display=swap" rel="stylesheet">
+    </head>
+    <body>
+        <div class="container-fluid">
+            <div class="nav-bar row">
+                <div class="col-lg-9">
+                    <h2 class="nav-head">Exam Time</h2>
+                </div>
+                <div class="col-lg-3">
+                    <div class="row">
+                        <p class="nav-info"><b>Welcome, {{user.username}}</b></p>&nbsp;&nbsp;
+                        <button class="logout-btn" onclick="logoutStudent()"><b>Logout</b></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br><br><br><br>
+        {% for i,j in Exam.items %}
+        {% if j or doneExam %}
+        <div class="container">
+            <div class="exam-card" style="height: 35%;">
+                <br>
+                <h3 class="exam-head"><b>{{i.Ename}}</b></h3>
+                <h6 class="exam-head"><b>Questions: {{i.QuestionCount}}</b></h6>
+                <h6 class="exam-head"><b>Total Marks: {{i.Tmarks}}</b></h6>
+                <h6 class="exam-head"><b>Duration: {{i.Duration}} Minutes</b></h6>
+                <h6 class="exam-head"><b>Start Date: {{i.Date}}</b></h6>
+                <h6 class="exam-head"><b>Start Time: {{i.STime}}</b></h6>
+                <h6 class="exam-head"><b>End Time: {{i.ETime}}</b></h6>
+                <button class="exam-btn" style="height: 15%;" onclick="examLaunch()" disabled><b>Launch</b></button>
+            </div>
+        </div><br><br>
+        {% else %}
+        <div class="container">
+            <div class="exam-card" style="height: 35%;">
+                <br>
+                <h3 class="exam-head"><b>{{i.Ename}}</b></h3>
+                <h6 class="exam-head"><b>Questions: {{i.QuestionCount}}</b></h6>
+                <h6 class="exam-head"><b>Total Marks: {{i.Tmarks}}</b></h6>
+                <h6 class="exam-head"><b>Duration: {{i.Duration}} Minutes</b></h6>
+                <h6 class="exam-head"><b>Start Date: {{i.Date}}</b></h6>
+                <h6 class="exam-head"><b>Start Time: {{i.STime}}</b></h6>
+                <h6 class="exam-head"><b>End Time: {{i.ETime}}</b></h6>
+                <button class="exam-btn" style="height: 15%;" onclick="examLaunch()"><b>Launch</b></button>
+            </div>
+        </div><br><br>
+        {% endif %}
+        {% endfor %}
+    </body>
+    <script>
+        function logoutStudent() {
+            window.open("/logout");
+        }
+        function examLaunch() {
+            window.open("/startexam");
+        }
+    </script>
+</html>

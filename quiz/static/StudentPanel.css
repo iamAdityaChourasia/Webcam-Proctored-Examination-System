@@ -1,0 +1,47 @@
+.nav-bar{
+    background-color: #FFD344;
+    height:8%;
+}
+.nav-head{
+    font-family: 'Pacifico';
+    margin-left: 1%;
+    margin-top: 0.5%;
+}
+.logout-btn{
+    width:30%;
+    height: 10%;
+    border: none;
+    font-family: 'Baloo 2';
+    background-color: #FFD344;
+    margin-top: 4%;
+}
+.logout-btn:hover{
+    background-color:#FFFFFF;
+    border-radius: 10px;
+    color: #000000;
+}
+.nav-info{
+    margin-top: 4%;
+    font-family: 'Baloo 2';
+}
+.nav-info:hover{
+    color: #FFFFFF;
+}
+.exam-card{
+    text-align: center;
+    width: 100%;
+    border: 3px solid #FFD344;
+    background-color: #FFD344;
+    border-radius: 10px;
+    box-shadow: 5px 5px 5px 5px #f1efef;
+}
+.exam-head{
+    font-family: 'Baloo 2';
+}
+.exam-btn{
+    color: #000;
+    width: 30%;
+    border: none;
+    background-color: #FFFFFF;
+    font-family: 'Baloo 2';
+}
